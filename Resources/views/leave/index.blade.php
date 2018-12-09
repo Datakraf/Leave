@@ -2,10 +2,10 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h3>hello</h3>
+        <h3>Create</h3>
     </div>
     <div class="card-body">
-        <p>Hello</p>
+        @include('leave::leave.forms.apply')
     </div>
 </div>
 @endsection

@@ -14,7 +14,7 @@ class LeavesController extends Controller
      */
     public function index()
     {
-        return view('leave::type.index');
+        return view('leave::leave.index');
     }
 
     /**
