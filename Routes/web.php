@@ -12,5 +12,5 @@
 */
 
 Route::prefix('leave')->group(function() {
-    Route::get('/', 'LeavesController@index');
+    Route::get('/', 'LeavesController@index')->name('leave.index');
 });

@@ -5,6 +5,7 @@ namespace Modules\Leave\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Datakraf\User;
 
 class LeavesController extends Controller
 {
@@ -14,7 +15,20 @@ class LeavesController extends Controller
      */
     public function index()
     {
-        return view('leave::leave.index');
+        $userResults = User::all();
+        $userColumnHeaders = ['name', 'email'];
+        $userRows = ['name', 'email'];
+        $userActions = [
+            'edit' => [
+                'icon' => 'fe fe-pencil',
+                'url' => route('leave.index'),
+                'text' => 'edit'
+            ]
+        ];
+        return view(
+            'leave::leave.admin.leave-records',
+            compact('userResults', 'userColumnHeaders', 'userRows', 'userActions')
+        );
     }
 
     /**
