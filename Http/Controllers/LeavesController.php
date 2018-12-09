@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 
-class LeaveController extends Controller
+class LeavesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class LeaveController extends Controller
      */
     public function index()
     {
-        return view('leave::index');
+        return view('leave::type.index');
     }
 
     /**
