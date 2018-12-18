@@ -8,11 +8,12 @@ use Carbon\Carbon;
 
 class Leave extends Model
 {
+    protected $table = 'leaves';
     protected $guarded = [];
 
     public function type()
     {
-        return $this->belongsTo(LeaveType::class);
+        return $this->belongsTo(LeaveType::class,'leavetype_id');
     }
 
     public function setStartDateAttribute($value)

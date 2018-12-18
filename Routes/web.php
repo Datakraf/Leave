@@ -1,20 +1,10 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
- */
-
-Route::prefix('leaves')->group(function () {
+Route::group(['prefix'=>'leaves','middleware'=>['auth']],function () {
     Route::get('/', 'LeavesController@index')->name('leave.index');
     Route::post('/', 'LeavesController@store')->name('leave.store');
-    Route::get('/apply', ['uses' => 'LeavesController@showLeaveApplicationForm', 'as' => '']);
+    Route::get('personal', 'LeavesController@showMyLeaveApplications')->name('leave.personal');
+    Route::get('apply', ['uses' => 'LeavesController@showLeaveApplicationForm', 'as' => 'leave.apply']);
     Route::group(['prefix' => 'administration'], function () {
         Route::group(['prefix' => 'leave-types'], function () {
             Route::get('/', ['uses' => 'LeaveTypesController@index', 'as' => 'leave-type.index']);

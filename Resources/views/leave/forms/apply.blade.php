@@ -81,11 +81,16 @@ Leave Application Form
 @section('page-js')
 @include('asset-partials.datepicker')
 <script type="text/javascript">
+    var date = new Date();
+    date.setDate(date.getDate());
+
     $('.start-date').datepicker({
         format: "{{config('app.date_format_js')}}",
+        startDate: date
     });
     $('.end-date').datepicker({
         format: "{{config('app.date_format_js')}}",
+        startDate: date
     });
 
 </script>

@@ -52,6 +52,15 @@ class LeavesController extends Controller
         );
     }
 
+    public function showMyLeaveApplications()
+    {
+
+        return view('leave::leave.my-leave', [            
+            'results' => auth()->user()->leaves->all()
+
+        ]);
+    }
+
     public function showLeaveApplicationForm()
     {
         return view('leave::leave.forms.apply', ['types' => $this->type->all()]);
@@ -62,7 +71,7 @@ class LeavesController extends Controller
      * @return Response
      */
     public function store(Request $request)
-    {        
+    {
         $this->leave->create($this->data);
 
         toast($this->message('save', 'Leave record'), 'success', 'top-right');

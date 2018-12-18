@@ -1,6 +1,6 @@
 <li class="menu-item active">
     <a class="menu-link" href="#">
-        <span class="icon ti-layout"></span>
+        <span class="icon ti-files"></span>
         <span class="title">Leave</span>
         <span class="arrow"></span>
     </a>
@@ -9,10 +9,15 @@
         <li class="menu-item">
             <a class="menu-link" href="#">
                 <span class="dot"></span>
-                <span class="title">My Leaves</span>
+                <span class="title">Apply Leave</span>
             </a>
         </li>
-
+        <li class="menu-item">
+            <a class="menu-link" href="#">
+                <span class="dot"></span>
+                <span class="title">My Leave Applications</span>
+            </a>
+        </li>
         <li class="menu-item">
             <a class="menu-link" href="">
                 <span class="dot"></span>
