@@ -5,6 +5,7 @@ Route::group(['prefix'=>'leaves','middleware'=>['auth']],function () {
     Route::post('/', 'LeavesController@store')->name('leave.store');
     Route::get('personal', 'LeavesController@showMyLeaveApplications')->name('leave.personal');
     Route::get('apply', ['uses' => 'LeavesController@showLeaveApplicationForm', 'as' => 'leave.apply']);
+    
     Route::group(['prefix' => 'administration'], function () {
         Route::group(['prefix' => 'leave-types'], function () {
             Route::get('/', ['uses' => 'LeaveTypesController@index', 'as' => 'leave-type.index']);
