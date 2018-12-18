@@ -7,6 +7,7 @@ use Modules\Leave\Entities\Leave;
 
 class LeaveType extends Model
 {
+    protected $table = 'leavetypes';
     protected $guarded = [];
 
     public function leaves()

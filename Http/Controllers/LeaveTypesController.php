@@ -5,68 +5,77 @@ namespace Modules\Leave\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Leave\Entities\LeaveType;
+use Datakraf\Traits\AlertMessage;
 
 class LeaveTypesController extends Controller
 {
+    use AlertMessage;
+
+    public function __construct(LeaveType $type, Request $request)
+    {
+        $this->type = $type;
+        $this->data = ['name' => $request->name, 'days' => $request->days];
+        $this->columnNames = ['name', 'days'];
+        $this->actions = [
+            'edit' => [
+                'url' => 'leave-type.edit',
+                'text' => ucwords('edit'),
+                'class' => 'btn btn-link text-dark',
+                'id' => ''
+            ]
+        ];
+        $this->deleteAction = [
+            'delete' => [
+                'url' => 'leave-type.destroy',
+                'text' => ucwords('delete'),
+                'class' => 'btn btn-link btn-danger text-white',
+                'id' => ''
+            ]
+        ];
+
+    }
     /**
      * Display a listing of the resource.
      * @return Response
      */
     public function index()
     {
-        return view('leave::index');
+        $results = $this->type->all();
+        return view('leave::type.index', ['columnNames' => $this->columnNames, 'results' => $results, 'actions' => $this->actions, 'deleteAction' => $this->deleteAction]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     * @return Response
-     */
-    public function create()
-    {
-        return view('leave::create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     * @param  Request $request
-     * @return Response
-     */
+  
     public function store(Request $request)
     {
+        $this->type->create($this->data);
+        toast($this->message('save', 'Leave type ' . $request->name), 'success', 'top-right');
+        return redirect()->route('leave-type.index');
     }
 
-    /**
-     * Show the specified resource.
-     * @return Response
-     */
-    public function show()
+    public function edit($id)
     {
-        return view('leave::show');
+        return view('leave::type.index', [
+            'entity' => $this->type->find($id),
+            'columnNames' => $this->columnNames,
+            'actions' => $this->actions,
+            'results' => $this->type->all(),
+            'deleteAction' => $this->deleteAction
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     * @return Response
-     */
-    public function edit()
+    public function update(Request $request, $id)
     {
-        return view('leave::edit');
+        $this->type->find($id)->update($this->data);
+        toast($this->message('update', 'Leave type #' . $id), 'success', 'top-right');
+        return redirect()->route('leave-type.index');
     }
 
-    /**
-     * Update the specified resource in storage.
-     * @param  Request $request
-     * @return Response
-     */
-    public function update(Request $request)
+
+    public function destroy($id)
     {
+        $this->type->find($id)->delete();
+        toast($this->message('delete', 'Leave type #' . $id), 'success', 'top-right');
+        return redirect()->route('leave-type.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     * @return Response
-     */
-    public function destroy()
-    {
-    }
 }

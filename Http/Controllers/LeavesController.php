@@ -6,13 +6,34 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Datakraf\User;
+use Modules\Leave\Entities\LeaveType;
+use Modules\Leave\Entities\Leave;
+use Datakraf\Traits\AlertMessage;
 
 class LeavesController extends Controller
 {
+    use AlertMessage;
     /**
      * Display a listing of the resource.
      * @return Response
      */
+    public $type;
+    public $data;
+    public $leave;
+
+    public function __construct(Leave $leave, LeaveType $type, Request $request)
+    {
+        $this->type = $type;
+        $this->data = [
+            'user_id' => $request->user_id,
+            'leavetype_id' => $request->leavetype_id,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'notes' => $request->notes
+        ];
+        $this->leave = $leave;
+    }
+
     public function index()
     {
         $userResults = User::all();
@@ -31,22 +52,21 @@ class LeavesController extends Controller
         );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Response
-     */
-    public function create()
+    public function showLeaveApplicationForm()
     {
-        return view('leave::create');
+        return view('leave::leave.forms.apply', ['types' => $this->type->all()]);
     }
-
     /**
      * Store a newly created resource in storage.
      * @param  Request $request
      * @return Response
      */
     public function store(Request $request)
-    {
+    {        
+        $this->leave->create($this->data);
+
+        toast($this->message('save', 'Leave record'), 'success', 'top-right');
+        return redirect()->back();
     }
 
     /**

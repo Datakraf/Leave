@@ -1,4 +1,4 @@
-<h4>Create Leave</h4>
+<h4>Create Leave Type</h4>
 <form action="" method="">
     <table id="myTable" class="table table-bordered dynamic-list">
         <thead>

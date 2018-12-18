@@ -1,11 +1,15 @@
 @extends('backend.master')
+@section('page-title')
+Leave Application Form
+@endsection
 @section('content')
 <div class="card">
     <div class="card-header">
         <h3>Leave Application Form</h3>
     </div>
     <div class="card-body">
-        <form action="" method="POST">
+        <form action="{{route('leave.store')}}" method="POST" enctype="multipart/form-data">
+            @csrf
             <!-- identity -->
             <div class="row">
                 <div class="col-4">
@@ -14,17 +18,21 @@
                 <div class="col-8">
                     <div class="row">
                         <div class="col">
+                            <input type="hidden" name="user_id" value="{{Auth::id()}}">
                             <div class="form-group">
                                 <label for="">{{ucwords(__('leave::leave.leave-type'))}}</label>
-                                <select name="leave_type" id="" class="form-control">
-                                    <option value="">Hello</option>
+                                <select name="leavetype_id" id="" class="form-control">
+                                    @foreach($types as $type)
+                                    <option value="{{$type->id}}">{{$type->name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
                                 <label for="">{{ucwords(__('leave::leave.leave-balance'))}}</label>
-                                <input type="text" name="" id="" value="22" class="form-control" disabled>
+                                <input type="text" name="" id="" value="{{auth()->user()->leaveEntitlement->days?:'' }}"
+                                    class="form-control" disabled>
                             </div>
                         </div>
                     </div>
@@ -32,13 +40,13 @@
                         <div class="col">
                             <div class="form-group">
                                 <label for="">{{ucwords(__('leave::leave.start-date'))}}</label>
-                                <input type="text" name="" id="" class="form-control">
+                                <input type="text" name="start_date" id="" class="form-control start-date" data-provide="datepicker">
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
                                 <label for="">{{ucwords(__('leave::leave.end-date'))}}</label>
-                                <input type="text" name="" id="" class="form-control">
+                                <input type="text" name="end_date" id="" class="form-control end-date" data-provide="datepicker">
                             </div>
                         </div>
                     </div>
@@ -46,7 +54,7 @@
                         <div class="col">
                             <div class="form-group">
                                 <label for="">{{ucwords(__('leave::leave.notes'))}}</label>
-                                <textarea name="" id="" cols="30" rows="6" class="form-control"></textarea>
+                                <textarea name="notes" id="" cols="30" rows="6" class="form-control"></textarea>
                             </div>
                         </div>
                         <div class="col">
@@ -69,4 +77,16 @@
 
     </div>
 </div>
+@endsection
+@section('page-js')
+@include('asset-partials.datepicker')
+<script type="text/javascript">
+    $('.start-date').datepicker({
+        format: "{{config('app.date_format_js')}}",
+    });
+    $('.end-date').datepicker({
+        format: "{{config('app.date_format_js')}}",
+    });
+
+</script>
 @endsection
