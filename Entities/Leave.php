@@ -5,6 +5,7 @@ namespace Modules\Leave\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Leave\Entities\LeaveType;
 use Carbon\Carbon;
+use Datakraf\User;
 
 class Leave extends Model
 {
@@ -14,6 +15,10 @@ class Leave extends Model
     public function type()
     {
         return $this->belongsTo(LeaveType::class,'leavetype_id');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class,'user_id');
     }
 
     public function setStartDateAttribute($value)

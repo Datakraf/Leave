@@ -7,21 +7,15 @@
 
     <ul class="menu-submenu">
         <li class="menu-item">
-            <a class="menu-link" href="#">
+            <a class="menu-link" href="{{route('leave.apply')}}">
                 <span class="dot"></span>
                 <span class="title">Apply Leave</span>
             </a>
         </li>
         <li class="menu-item">
-            <a class="menu-link" href="#">
+            <a class="menu-link" href="{{route('leave.personal')}}">
                 <span class="dot"></span>
                 <span class="title">My Leave Applications</span>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a class="menu-link" href="">
-                <span class="dot"></span>
-                <span class="title">Config</span>
             </a>
         </li>
     </ul>

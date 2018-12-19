@@ -9,6 +9,8 @@ use Datakraf\User;
 use Modules\Leave\Entities\LeaveType;
 use Modules\Leave\Entities\Leave;
 use Datakraf\Traits\AlertMessage;
+use Datakraf\Notifications\ApplyLeave;
+use Auth;
 
 class LeavesController extends Controller
 {
@@ -20,8 +22,9 @@ class LeavesController extends Controller
     public $type;
     public $data;
     public $leave;
+    public $user;
 
-    public function __construct(Leave $leave, LeaveType $type, Request $request)
+    public function __construct(Leave $leave, LeaveType $type, Request $request, User $user)
     {
         $this->type = $type;
         $this->data = [
@@ -32,30 +35,24 @@ class LeavesController extends Controller
             'notes' => $request->notes
         ];
         $this->leave = $leave;
+        $this->user = $user;
     }
 
     public function index()
     {
-        $userResults = User::all();
-        $userColumnHeaders = ['name', 'email'];
-        $userRows = ['name', 'email'];
-        $userActions = [
-            'edit' => [
-                'icon' => 'fe fe-pencil',
-                'url' => route('leave.index'),
-                'text' => 'edit'
-            ]
-        ];
-        return view(
-            'leave::leave.admin.leave-records',
-            compact('userResults', 'userColumnHeaders', 'userRows', 'userActions')
-        );
+        $leaves = $this->leave->all();
+
+        return view('leave::leave.admin.leave-records', compact('leaves'));
     }
 
+    public function show($id)
+    {
+        return view('leave::leave.forms.show', ['leave' => $this->leave->find($id), 'types' => $this->type->all()]);
+    }
     public function showMyLeaveApplications()
     {
 
-        return view('leave::leave.my-leave', [            
+        return view('leave::leave.my-leave', [
             'results' => auth()->user()->leaves->all()
 
         ]);
@@ -72,44 +69,12 @@ class LeavesController extends Controller
      */
     public function store(Request $request)
     {
-        $this->leave->create($this->data);
-
+        $leave = $this->leave->create($this->data);
+        $notifier = Auth::user();
+        $user = User::find(1);
+        $user->notify(new ApplyLeave($leave, $user, $notifier));
         toast($this->message('save', 'Leave record'), 'success', 'top-right');
         return redirect()->back();
     }
 
-    /**
-     * Show the specified resource.
-     * @return Response
-     */
-    public function show()
-    {
-        return view('leave::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @return Response
-     */
-    public function edit()
-    {
-        return view('leave::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param  Request $request
-     * @return Response
-     */
-    public function update(Request $request)
-    {
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @return Response
-     */
-    public function destroy()
-    {
-    }
 }
