@@ -18,6 +18,7 @@ My Leave Applications
                 </tr>
             </thead>
             <tbody>
+                @if(isset($results) && $results->count() > 0)
                 @foreach($results as $key=>$result)
                 <tr>
                     <td>{{++$key}}</td>
@@ -26,6 +27,11 @@ My Leave Applications
                     <td>{{$result->end_date}}</td>
                 </tr>
                 @endforeach
+                @else
+                <tr>
+                    <td colspan="4" class="text-center">No records found</td>
+                </tr>
+                @endif
             </tbody>
         </table>
     </div>

@@ -30,7 +30,7 @@ class CreateLeaveEntitlement
     {
         $this->leave->create([
             'user_id' => $event->user->id,
-            'days' => 40
+            'days' => 14
         ]);
     }
 }

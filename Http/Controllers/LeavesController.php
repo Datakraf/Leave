@@ -53,7 +53,7 @@ class LeavesController extends Controller
     {
 
         return view('leave::leave.my-leave', [
-            'results' => auth()->user()->leaves->all()
+            'results' => Auth::user()->leaves
 
         ]);
     }
